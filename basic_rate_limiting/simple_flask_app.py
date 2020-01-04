@@ -1,15 +1,17 @@
+import time
+import redis
 from flask import Flask
 from flask import request
 from flask import abort
-
-import redis,time
+from flask import render_template
 
 r = redis.Redis()
-
-
-
 app = Flask(__name__)
 
+
+@app.errorhandler(429)
+def rate_limit_exceeded(e):
+    return render_template('error_429.html'), 429
 
 
 @app.route("/")
@@ -31,7 +33,7 @@ def index():
             p.execute()
             return "OK"
         else:
-            abort(429, 'Rate limit Exceeded')
+            abort(429)
             
     else:
         abort(404)
