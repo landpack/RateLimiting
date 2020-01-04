@@ -31,10 +31,10 @@ def index():
             p.execute()
             return "OK"
         else:
-            abort(401, 'rate limit')
+            abort(429, 'Rate limit Exceeded')
             
     else:
-        abort(404, 'not found or not auth')
+        abort(404)
 
 if __name__ == '__main__':
     app.run(debug=True)
